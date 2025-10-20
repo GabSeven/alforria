@@ -1,0 +1,6 @@
+# Tratar todos os arquivos como LF
+* text=auto eol=lf
+
+# Exceções para arquivos que DEVEM ser CRLF
+*.bat eol=crlf
+*.cmd eol=crlf
