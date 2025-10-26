@@ -44,8 +44,9 @@ function App() {
   const professores = dados ? Object.values(dados) : [];
   
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <div className='root'>
+      {!dados && (
+        <form onSubmit={handleSubmit}>
         <input 
           type="file" 
           accept=".tsv" 
@@ -53,9 +54,51 @@ function App() {
         />
         <button type="submit">Enviar arquivo</button>
       </form>
-      123
+      )}
+      {dados && (
+        <>
+        <button className='side'>{"<"}</button>
+        <main className='professor'>
+          <header className='info-professor'>
+            {/* <h1>Nome do Professor</h1> */}
+          </header>
+
+          <article className='grades-e-disciplinas'>
+            <section className='grades'>
+              {/* grades */}
+              <table className='grade-horarios'>
+                <caption>
+                  Grade do 1o Semestre
+                </caption>
+
+              </table>
+              
+              <table className='grade-horarios'>
+                <caption>
+                  Grade do 2o Semestre
+                </caption>
+
+              </table>
+              
+            </section>
+            
+            <section className='disciplinas-grupos'>
+              
+              <ul className='disciplinas'>
+
+              </ul>
+
+              <ul className='grupos'></ul>
+            </section>
+          </article>
+
+        </main>
+        <button className='side'>{">"}</button>
+      </>
+      )}
+      
       <div>
-      {professores.map(professor => {
+      {/* {professores.map(professor => {
         return(
           <div className="tabela-professor" key={professor.matricula}> {professor.nome}
           {professor.turmas.map(turma => {
@@ -65,9 +108,9 @@ function App() {
           </div>
           
         )
-      })}
+      })} */}
       </div>
-    </>
+    </div>
   );
 }
 export default App
