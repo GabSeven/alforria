@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -65,4 +69,20 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.tabela-professor {
+  border: 3px solid;
+  border-color: #1b1b1b;
+  color: #242424;
+  font-weight: 100;
+  background-color: #e7e7e7;
+  justify-content: center;
+  flex-direction: column;
+  flex: content;
+  
+}
+
+.tabela-professor.disciplinas {
+  border: #535bf2;
 }
