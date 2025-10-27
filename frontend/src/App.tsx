@@ -83,7 +83,7 @@ function App() {
         <button className='side' onClick={voltarProfessor}>{"<"}</button>
         <main className='professor'>
           <header className='info-professor'>
-            {}-{professores[idProfessorAtivo].nome}
+            {idProfessorAtivo}-{professores[idProfessorAtivo].nome}
           </header>
 
           <article className='grades-e-disciplinas'>
