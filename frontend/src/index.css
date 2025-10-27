@@ -143,12 +143,15 @@ ul {
 }
 
 ul.disciplinas {
-  align-content: start;
-  justify-content: start;
-
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   
+  padding: 10px;
   min-width: 340px;
   min-height: 200px;
+  list-style: none;  
   
   
 }

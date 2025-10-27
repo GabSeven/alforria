@@ -20,7 +20,7 @@ interface Turma {
 
 
 function App() {
-  const [dados, setDados] = useState<Professor[] | null>(null);
+  const [professores, setProfessores] = useState<Record<string, Professor> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -38,14 +38,37 @@ function App() {
     });
     
     const dados = await response.json();
-    setDados(dados);
+    setProfessores(dados);
+    
+    if (!idProfessorAtivo || !(dados?.[idProfessorAtivo] && professores?.[idProfessorAtivo])) setIdProfessorAtivo(Object.keys(dados)[0]);
+    // console.log(dados);
   };
 
-  const professores = dados ? Object.values(dados) : [];
-  
+  const [idProfessorAtivo, setIdProfessorAtivo] = useState<string | null>(null);
+
+  const avancarProfessor = () => {
+    
+    if (!professores || !idProfessorAtivo) return;
+    
+    const ids = Object.keys(professores);
+    const indexAtual = ids.indexOf(idProfessorAtivo);
+    const proximoIndex = (indexAtual + 1) % ids.length;
+    setIdProfessorAtivo(ids[proximoIndex]);
+  };
+
+  const voltarProfessor = () => {
+    
+    if (!professores || !idProfessorAtivo) return;
+    
+    const ids = Object.keys(professores);
+    const indexAtual = ids.indexOf(idProfessorAtivo);
+    const proximoIndex = (indexAtual - 1 + ids.length) % ids.length; // % pode retornar valores negativos
+    setIdProfessorAtivo(ids[proximoIndex]);
+  };
+
   return (
     <div className='root'>
-      {!dados && (
+      {true && (
         <form onSubmit={handleSubmit}>
         <input 
           type="file" 
@@ -55,12 +78,12 @@ function App() {
         <button type="submit">Enviar arquivo</button>
       </form>
       )}
-      {dados && (
+      {professores && idProfessorAtivo && (
         <>
-        <button className='side'>{"<"}</button>
+        <button className='side' onClick={voltarProfessor}>{"<"}</button>
         <main className='professor'>
           <header className='info-professor'>
-            {/* <h1>Nome do Professor</h1> */}
+            {}-{professores[idProfessorAtivo].nome}
           </header>
 
           <article className='grades-e-disciplinas'>
@@ -85,7 +108,9 @@ function App() {
             <section className='disciplinas-grupos'>
               
               <ul className='disciplinas'>
-
+                {professores[idProfessorAtivo].turmas.map(turma => {
+                  return(<div>{turma.codigo_disciplina}-{turma.numero_turma} - {turma.nome_disciplina}</div>)
+                })}
               </ul>
 
               <ul className='grupos'></ul>
@@ -93,7 +118,7 @@ function App() {
           </article>
 
         </main>
-        <button className='side'>{">"}</button>
+        <button className='side' onClick={avancarProfessor}>{">"}</button>
       </>
       )}
       
