@@ -24,6 +24,10 @@ function App() {
   const [professores, setProfessores] = useState<Record<string, Professor> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  document.addEventListener('keydown', (e) => {
+    console.log(e);
+  });
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     
@@ -68,8 +72,8 @@ function App() {
   };
 
   return (
-    <div className='root'>
-      {true && (
+    <>
+      
         <form onSubmit={handleSubmit}>
         <input 
           type="file" 
@@ -78,7 +82,8 @@ function App() {
         />
         <button type="submit">Enviar arquivo</button>
       </form>
-      )}
+      
+      <div className='root'>
       {professores && idProfessorAtivo && (
         <>
         <button className='side' onClick={voltarProfessor}>{"<"}</button>
@@ -142,6 +147,7 @@ function App() {
       })} */}
       </div>
     </div>
+    </>
   );
 }
 export default App
