@@ -137,6 +137,17 @@ section.disciplinas-grupos {
   gap: 10px;
 }
 
+section.observacao {
+  min-height: 100px;
+  
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+
+  padding: 10px;
+  gap: 10px;
+}
+
 ul {
   background-color: #a1a1a1;
   

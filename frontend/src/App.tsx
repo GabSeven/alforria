@@ -9,6 +9,7 @@ interface Professor {
   matricula: string;
   nome: string;
   turmas: Turma[];
+  observacao: string;
 }
 
 interface Turma {
@@ -115,6 +116,11 @@ function App() {
 
               <ul className='grupos'></ul>
             </section>
+            
+            {!professores[idProfessorAtivo].observacao && ( 
+            <section className='observacao'>
+              observacao 123
+            </section>)}
           </article>
 
         </main>
