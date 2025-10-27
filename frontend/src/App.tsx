@@ -109,7 +109,7 @@ function App() {
               
               <ul className='disciplinas'>
                 {professores[idProfessorAtivo].turmas.map(turma => {
-                  return(<div>{turma.codigo_disciplina}-{turma.numero_turma} - {turma.nome_disciplina}</div>)
+                  return(<div title={turma.curso}>{turma.codigo_disciplina}-{turma.numero_turma} - {turma.nome_disciplina}</div>)
                 })}
               </ul>
 
