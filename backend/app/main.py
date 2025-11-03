@@ -1,6 +1,8 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from processors.tsv_processor import tsv_para_estruturado
+# from processors.tsv_processor import tsv_para_estruturado
+import processors.tsv_processor
+import processors.grupos
 import os
 
 app = FastAPI()
@@ -35,24 +37,31 @@ async def root():
 async def professores():
     return {"aaaaaaa": "aaa"}
 
-@app.post("/professores")
-async def upload_tsv(arquivo: UploadFile = File(...)):  # ← AQUI ESTÁ O ERRO!
+@app.post("/upload")
+async def upload(
+    professores: UploadFile = File(..., description= "Arquivo TSV de professores"), 
+    grupos: UploadFile = File(..., description="Arquivo TXT de grupos")):
     
-    print("✅ 0 - Função chamada!")
-    if not arquivo.filename.endswith('.tsv'):
+    if not professores.filename.endswith('.tsv'):
         raise HTTPException(
             status_code=400,
             detail="Apenas arquivos TSV são aceitos"
         )
     
-    print("✅ 1 - Arquivo validado")
-    conteudo = await arquivo.read()
+    if not grupos.filename.endswith('.txt'):
+        raise HTTPException(
+            status_code=400,
+            detail="Apenas arquivos TXT são aceitos"
+        )
+    print("EEEEEEEEEEEEEE")
     
-    print("✅ 2 - Conteúdo lido")
-    conteudo_texto = conteudo.decode('utf-8')
-    print("✅ 3 - Decodificado")
+    conteudoGrupos = await grupos.read()
+    conteudoProf = await professores.read()
+
+    dadosGrupos = processors.grupos.processar_txt(conteudoGrupos.decode('utf-8'))
+    dadosProf = processors.tsv_processor.tsv_para_estruturado(conteudoProf.decode('utf-8'))
     
-    dados = tsv_para_estruturado(conteudo_texto)
-    print("✅ 4 - Processamento completo")
+
+    print("✅  - Processamento completo")
     
-    return dados
+    return { "professores" : dadosProf, "grupos" : dadosGrupos }

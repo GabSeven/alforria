@@ -17,30 +17,44 @@ interface Turma {
   curso: string;
 }
 
+// interface Grupo {
+//   nome: string;
+//   disciplinas: string[];
+// }
 
 function App() {
   const [professores, setProfessores] = useState<Record<string, Professor> | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [grupos, setGrupos] = useState<Record<string, string[]> | null>(null);
+  const professorFile = useRef<HTMLInputElement>(null);
+  const gruposFile = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     
-    const arquivo = fileInputRef.current?.files?.[0];
-    if (!arquivo) return;
+    const arquivoProf = professorFile.current?.files?.[0];
+    if (!arquivoProf) return;
+
+    const arquivoGrupos = gruposFile.current?.files?.[0];
+    if (!arquivoGrupos) return;
     
+
     const formData = new FormData();
-    formData.append('arquivo', arquivo);
+    formData.append('professores', arquivoProf);
+    formData.append('grupos', arquivoGrupos);
     
-    const response = await fetch(`${API_URL}/professores`, {
+    const response = await fetch(`${API_URL}/upload`, {
       method: 'POST',
       body: formData
     });
     
     const dados = await response.json();
-    setProfessores(dados);
+    setProfessores(dados.professores);
+    setGrupos(dados.grupos);
+    console.log(professores);
+    console.log(grupos);
     
-    if (!idProfessorAtivo || !(dados?.[idProfessorAtivo] && professores?.[idProfessorAtivo])) setIdProfessorAtivo(Object.keys(dados)[0]);
-    // console.log(dados);
+    if (!idProfessorAtivo || !(dados.professores?.[idProfessorAtivo] && professores?.[idProfessorAtivo])) setIdProfessorAtivo(Object.keys(dados.professores)[0]);
+
   };
 
   const [idProfessorAtivo, setIdProfessorAtivo] = useState<string | null>(null);
@@ -86,7 +100,7 @@ function App() {
         console.log("oii");
       } else {
         e.preventDefault();
-        console.log(e);
+        // console.log(e);
       }
     };
 
@@ -106,7 +120,12 @@ function App() {
         <input 
           type="file" 
           accept=".tsv" 
-          ref={fileInputRef}
+          ref={professorFile}
+        />
+        <input 
+          type="file" 
+          accept=".txt" 
+          ref={gruposFile}
         />
         <button type="submit">Enviar arquivo</button>
       </form>
@@ -164,11 +183,13 @@ function App() {
                 
                 <ul className='disciplinas'>
                   {professores[idProfessorAtivo].turmas.map(turma => {
-                    return(<div title={turma.curso}>{turma.codigo_disciplina}-{turma.numero_turma} - {turma.nome_disciplina}</div>)
+                    return(<li title={turma.curso}>{turma.codigo_disciplina}-{turma.numero_turma} - {turma.nome_disciplina}</li>)
                   })}
                 </ul>
 
-                <ul className='grupos'></ul>
+                <ul className='grupos'> {!grupos && Object.entries(grupos).map(([nomeGrupo, disciplinas]) => {
+                  return(<li> {nomeGrupo} </li>)
+                })} </ul>
               </section>
               
               {!professores[idProfessorAtivo].observacao && ( 
@@ -182,20 +203,6 @@ function App() {
         </div>
       </>
       )}
-      
-      <div>
-      {/* {professores.map(professor => {
-        return(
-          <div className="tabela-professor" key={professor.matricula}> {professor.nome}
-          {professor.turmas.map(turma => {
-            // return(<div className='disciplina'>{JSON.stringify(turma)}</div>)
-            return(<div className='disciplina'>{`${turma.codigo_disciplina} - ${turma?.nome_disciplina}`}</div>)
-          })}
-          </div>
-          
-        )
-      })} */}
-      </div>
     </div>
     </>
   );

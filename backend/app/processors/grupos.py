@@ -23,8 +23,9 @@ def processar_txt(conteudo: str) -> dict:
 
 
 def abrir_arquivo():
-    with open("../grupos.txt", encoding="utf-8") as f:
+    with open("./grupos.txt", encoding="utf-8") as f:
         conteudo = f.read()
 
     resultado = processar_txt(conteudo)
     print(resultado)
+
