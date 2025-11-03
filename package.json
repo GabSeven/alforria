@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "scripts": {
+    "setup": "npm run setup:frontend && npm run setup:backend",
+    "setup:frontend" : "cd frontend && npm ci && cd ..",
+    "setup:backend" :"cd backend && python -m venv .venv && pip install -r requirements.txt && deactivate",
+    
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend" : "cd backend/app && .\\..\\venv\\Scripts\\fastapi dev main.py"
+  }
+}
