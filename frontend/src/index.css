@@ -15,12 +15,20 @@
 
   padding: 0;
   gap: 0;
+
+  /* display: flex; */
 }
 
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;   
+}
 
 div.root {
   gap: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;   
 }
@@ -58,6 +66,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  
 }
 button:hover {
   border-color: #646cff;
@@ -68,7 +77,14 @@ button:focus-visible {
 }
 
 button.side {
+ flex: none;
   background-color: #343547;
+  width: 60px;      /* ← Largura fixa */
+  height: 60px;     /* ← Altura fixa */
+  padding: 0;       /* ← Remove padding variável */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 main.professor {

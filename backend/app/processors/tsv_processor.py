@@ -13,7 +13,7 @@ class Professor(BaseModel):
     nome: str
     turmas: list[Turma]
 
-
+# essa função deveria funcionar para qualquer tipo de tsv
 def tsv_para_estruturado(arquivo: str) -> dict:
 
     df = pd.read_csv(io.StringIO(arquivo), sep='\t', dtype=str)
@@ -41,5 +41,4 @@ def tsv_para_estruturado(arquivo: str) -> dict:
         )
         
         professores[matricula]["turmas"].append(turma_data)
-        print(professores)
     return professores

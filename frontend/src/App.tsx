@@ -1,6 +1,4 @@
-import { useState, useRef } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 
 const API_URL = import.meta.env.API_URL || 'http://127.0.0.1:8000'
@@ -23,10 +21,6 @@ interface Turma {
 function App() {
   const [professores, setProfessores] = useState<Record<string, Professor> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  document.addEventListener('keydown', (e) => {
-    console.log(e);
-  });
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -71,10 +65,44 @@ function App() {
     setIdProfessorAtivo(ids[proximoIndex]);
   };
 
+    
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement
+      ) {
+        return; // ← Permite digitação normal
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        voltarProfessor();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        avancarProfessor();
+      } else if (e.key === "f" && e.ctrlKey) {
+        e.preventDefault();
+        console.log("oii");
+      } else {
+        e.preventDefault();
+        console.log(e);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [voltarProfessor, avancarProfessor]);
+
   return (
     <>
       
-        <form onSubmit={handleSubmit}>
+      
+      <div className='root'>
+      <form onSubmit={handleSubmit}>
         <input 
           type="file" 
           accept=".tsv" 
@@ -82,54 +110,76 @@ function App() {
         />
         <button type="submit">Enviar arquivo</button>
       </form>
-      
-      <div className='root'>
       {professores && idProfessorAtivo && (
         <>
-        <button className='side' onClick={voltarProfessor}>{"<"}</button>
-        <main className='professor'>
-          <header className='info-professor'>
-            {idProfessorAtivo}-{professores[idProfessorAtivo].nome}
-          </header>
+         <form 
+          role="search" 
+          onSubmit={(e) => {
+            e.preventDefault();
+            // Sua lógica de busca
+          }}
+          className="caixa-busca"
+        >
+          <label htmlFor="busca-professores" className="sr-only">
+            Buscar professores, disciplinas ou cursos
+          </label>
+          <input
+            id="busca-professores"
+            type="search"
+            placeholder="Buscar professores, disciplinas ou cursos..."
+            // value={termoBusca}
+            // onChange={(e) => setTermoBusca(e.target.value)}
+          />
+          <button type="submit">
+            🔍
+          </button>
+        </form>
+        <div>
+          <button className='side' onClick={voltarProfessor}>{"<"}</button>
+          <main className='professor'>
+            <header className='info-professor'>
+              {idProfessorAtivo}-{professores[idProfessorAtivo].nome}
+            </header>
 
-          <article className='grades-e-disciplinas'>
-            <section className='grades'>
-              {/* grades */}
-              <table className='grade-horarios'>
-                <caption>
-                  Grade do 1o Semestre
-                </caption>
+            <article className='grades-e-disciplinas'>
+              <section className='grades'>
+                {/* grades */}
+                <table className='grade-horarios'>
+                  <caption>
+                    Grade do 1o Semestre
+                  </caption>
 
-              </table>
+                </table>
+                
+                <table className='grade-horarios'>
+                  <caption>
+                    Grade do 2o Semestre
+                  </caption>
+
+                </table>
+                
+              </section>
               
-              <table className='grade-horarios'>
-                <caption>
-                  Grade do 2o Semestre
-                </caption>
+              <section className='disciplinas-grupos'>
+                
+                <ul className='disciplinas'>
+                  {professores[idProfessorAtivo].turmas.map(turma => {
+                    return(<div title={turma.curso}>{turma.codigo_disciplina}-{turma.numero_turma} - {turma.nome_disciplina}</div>)
+                  })}
+                </ul>
 
-              </table>
+                <ul className='grupos'></ul>
+              </section>
               
-            </section>
-            
-            <section className='disciplinas-grupos'>
-              
-              <ul className='disciplinas'>
-                {professores[idProfessorAtivo].turmas.map(turma => {
-                  return(<div title={turma.curso}>{turma.codigo_disciplina}-{turma.numero_turma} - {turma.nome_disciplina}</div>)
-                })}
-              </ul>
+              {!professores[idProfessorAtivo].observacao && ( 
+              <section className='observacao'>
+                observacao 123
+              </section>)}
+            </article>
 
-              <ul className='grupos'></ul>
-            </section>
-            
-            {!professores[idProfessorAtivo].observacao && ( 
-            <section className='observacao'>
-              observacao 123
-            </section>)}
-          </article>
-
-        </main>
-        <button className='side' onClick={avancarProfessor}>{">"}</button>
+          </main>
+          <button className='side' onClick={avancarProfessor}>{">"}</button>
+        </div>
       </>
       )}
       
