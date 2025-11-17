@@ -1,5 +1,6 @@
 import io
 
+
 def processar_txt(conteudo: str) -> dict:
     grupos = {}
     f = io.StringIO(conteudo)
@@ -15,9 +16,9 @@ def processar_txt(conteudo: str) -> dict:
 
         # adiciona as disciplinas no grupo
         if codigo_grupo not in grupos:
-            grupos[codigo_grupo] = set()
+            grupos[codigo_grupo] = codigos_disciplinas
 
-        grupos[codigo_grupo].update(codigos_disciplinas)
+        # grupos[codigo_grupo].update(codigos_disciplinas)
 
     return grupos
 
@@ -28,4 +29,3 @@ def abrir_arquivo():
 
     resultado = processar_txt(conteudo)
     print(resultado)
-

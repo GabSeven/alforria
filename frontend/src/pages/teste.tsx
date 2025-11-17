@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import "./App.css";
+import "./../App.css";
 
 const API_URL = "http://127.0.0.1:8000";
 
@@ -22,7 +22,7 @@ interface Turma {
 //   disciplinas: string[];
 // }
 
-function App() {
+export default function UploadPage() {
   const [professores, setProfessores] = useState<Record<
     string,
     Professor
@@ -118,11 +118,6 @@ function App() {
   return (
     <>
       <div className="root">
-        <form onSubmit={handleSubmit}>
-          <input type="file" accept=".tsv" ref={professorFile} />
-          <input type="file" accept=".txt" ref={gruposFile} />
-          <button type="submit">Enviar arquivo</button>
-        </form>
         {professores && idProfessorAtivo && (
           <>
             <form
@@ -204,4 +199,3 @@ function App() {
     </>
   );
 }
-export default App;
