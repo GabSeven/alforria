@@ -1,5 +1,6 @@
 import os
 
+import alforria as a
 import processors.grupos
 import processors.save_load
 import processors.tsv_processor
@@ -26,30 +27,40 @@ async def loadDados():
     return processors.save_load.carregar_dados()
 
 
+# @app.post("/upload")
+# async def upload(
+#     professores: UploadFile = File(..., description="Arquivo TSV de professores"),
+#     grupos: UploadFile = File(..., description="Arquivo TXT de grupos"),
+# ):
+#     if not professores.filename.endswith(".tsv"):
+#         raise HTTPException(status_code=400, detail="Apenas arquivos TSV são aceitos")
+
+#     if not grupos.filename.endswith(".txt"):
+#         raise HTTPException(status_code=400, detail="Apenas arquivos TXT são aceitos")
+#     print("EEEEEEEEEEEEEE")
+
+#     conteudoGrupos = await grupos.read()
+#     conteudoProf = await professores.read()
+
+#     dadosGrupos = processors.grupos.processar_txt(conteudoGrupos.decode("utf-8"))
+#     dadosProf = processors.tsv_processor.tsv_para_estruturado(
+#         conteudoProf.decode("utf-8")
+#     )
+
+#     print("✅  - Processamento completo")
+
+#     dados = {"professores": dadosProf, "grupos": dadosGrupos}
+
+#     processors.save_load.salvar_dados_processados(dados)
+
+#     return {"status": "sucess"}
+
+
 @app.post("/upload")
-async def upload(
-    professores: UploadFile = File(..., description="Arquivo TSV de professores"),
-    grupos: UploadFile = File(..., description="Arquivo TXT de grupos"),
-):
-    if not professores.filename.endswith(".tsv"):
-        raise HTTPException(status_code=400, detail="Apenas arquivos TSV são aceitos")
+async def upload():
+    save()  # coloca os arquivos na pasta de arquivos
+    a.alforria._load_()
 
-    if not grupos.filename.endswith(".txt"):
-        raise HTTPException(status_code=400, detail="Apenas arquivos TXT são aceitos")
-    print("EEEEEEEEEEEEEE")
 
-    conteudoGrupos = await grupos.read()
-    conteudoProf = await professores.read()
-
-    dadosGrupos = processors.grupos.processar_txt(conteudoGrupos.decode("utf-8"))
-    dadosProf = processors.tsv_processor.tsv_para_estruturado(
-        conteudoProf.decode("utf-8")
-    )
-
-    print("✅  - Processamento completo")
-
-    dados = {"professores": dadosProf, "grupos": dadosGrupos}
-
-    processors.save_load.salvar_dados_processados(dados)
-
-    return {"status": "sucess"}
+def save():
+    print("arquivos salvos")
