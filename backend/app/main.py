@@ -1,6 +1,6 @@
 import os
 
-import alforria as a
+import alforria
 import processors.grupos
 import processors.save_load
 import processors.tsv_processor
@@ -10,6 +10,16 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# alforria.start() # passa os caminhos e configuracoes iniciais
+# alforria.set_config_path("./alforriaData/config")
+alforria.alforria._PATHS_PATH = "../../alforriaData/config/paths.cnf"
+alforria.alforria._ALFCFG_PATH = "../../alforriaData/config/alforria.cnf"
+alforria.alforria_CONST_PATH = "../../alforriaData/config/constantes.cnf"
+# carrega os objetos
+# from alforria import professores, grupos, turmas, pre_atribuidas,s
+
+alforria.alforria._load_()
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,10 +31,10 @@ app.add_middleware(
 
 @app.get("/dados")
 async def loadDados():
-    if not os.path.exists("../../dados.json"):
-        raise HTTPException(status_code=400, detail="É preciso upar dados")
-
-    return processors.save_load.carregar_dados()
+    # if not os.path.exists("../../dados.json"):
+    #     raise HTTPException(status_code=400, detail="É preciso upar dados")
+    print(alforria.alforria.grupos)
+    return alforria.alforria.grupos
 
 
 # @app.post("/upload")
@@ -59,7 +69,7 @@ async def loadDados():
 @app.post("/upload")
 async def upload():
     save()  # coloca os arquivos na pasta de arquivos
-    a.alforria._load_()
+    alforria.alforria._load_()
 
 
 def save():

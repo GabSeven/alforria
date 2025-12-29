@@ -5,3 +5,5 @@ b = None
 def func():
     global a
     print(a)
+    a = 11
+    print(a)

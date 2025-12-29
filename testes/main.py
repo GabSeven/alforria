@@ -1,5 +1,4 @@
-import a
+from teste import *
 
-a.a = 14
-
-a.func()
+func()
+print(a)

@@ -1,0 +1,9 @@
+GRUPOSPATH ../../alforriaData/dados/grupos.txt
+PREFPATH ../../alforriaData/dados/preferencias.tsv
+SARPATH ../../alforriaData/dados/ensalamento.csv
+CURSOSPATH ../../alforriaData/dados/sar097.txt
+ATRIBPATH ../../alforriaData/dados/pre_atribuidas.tsv
+FANTPATH ../../alforriaData/dados/fantasmas.csv
+DATPATH ../../alforriaData/lp/alforria.dat
+DAT2PATH ../../alforriaData/lp/alforria2.dat
+SOLPATH ../../alforriaData/lp/alforria.sol
