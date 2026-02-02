@@ -1,4 +1,4 @@
-from teste import *
+from .teste import *
 
 func()
 print(a)

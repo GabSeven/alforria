@@ -13,13 +13,13 @@ app = FastAPI()
 
 # alforria.start() # passa os caminhos e configuracoes iniciais
 # alforria.set_config_path("./alforriaData/config")
-alforria.alforria._PATHS_PATH = "../../alforriaData/config/paths.cnf"
-alforria.alforria._ALFCFG_PATH = "../../alforriaData/config/alforria.cnf"
-alforria.alforria_CONST_PATH = "../../alforriaData/config/constantes.cnf"
+alforria._PATHS_PATH = "../../alforriaData/config/paths.cnf"
+alforria._ALFCFG_PATH = "../../alforriaData/config/alforria.cnf"
+alforria._CONST_PATH = "../../alforriaData/config/constantes.cnf"
 # carrega os objetos
 # from alforria import professores, grupos, turmas, pre_atribuidas,s
 
-alforria.alforria._load_()
+alforria._load_()
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,10 +31,42 @@ app.add_middleware(
 
 @app.get("/dados")
 async def loadDados():
-    # if not os.path.exists("../../dados.json"):
-    #     raise HTTPException(status_code=400, detail="É preciso upar dados")
-    print(alforria.alforria.grupos)
-    return alforria.alforria.grupos
+    # precisa simplificar isso aqui, talvez mudar a funcao serialize
+    # transformar o arquivo main no __init__ talvez
+    return {
+        "professores": [p.serialize() for p in alforria.professores],
+        "turmas": [t.serialize() for t in alforria.turmas],
+        "grupos": alforria.grupos,
+        "pre_atribuidas": [
+            {"professor": p.matricula, "disciplina": t.codigo, "turma": t.turma}
+            for (p, t) in alforria.pre_atribuidas
+        ],
+    }
+
+
+@app.get("/professores")
+async def getProf():
+    return {"professores": [p.serialize() for p in alforria.professores]}
+
+
+@app.post("/professores/{prof_id}/turmas")
+async def attribute(prof_id: str, turmas: list[str] = []):
+    # professor = alforria.main.professores[prof_id]
+    for turma in turmas:
+        # if turma in alforria.main.turmas:
+        # add turma to professor.turmas
+        pass
+    return {}
+
+
+@app.get("/turmas")
+async def getTurmas():
+    return {"turmas": [t.serialize() for t in alforria.turmas]}
+
+
+@app.get("/grupos")
+async def getGrupos():
+    return {"grupos": alforria.grupos}
 
 
 # @app.post("/upload")
