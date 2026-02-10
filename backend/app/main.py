@@ -46,7 +46,7 @@ async def loadDados():
 
 @app.get("/professores")
 async def getProf():
-    return {"professores": [p.serialize() for p in alforria.professores]}
+    return [p.serialize() for p in alforria.professores]
 
 
 @app.post("/professores/{prof_id}/turmas")
@@ -61,12 +61,17 @@ async def attribute(prof_id: str, turmas: list[str] = []):
 
 @app.get("/turmas")
 async def getTurmas():
-    return {"turmas": [t.serialize() for t in alforria.turmas]}
+    return [t.serialize() for t in alforria.turmas]
 
 
 @app.get("/grupos")
 async def getGrupos():
-    return {"grupos": alforria.grupos}
+    return alforria.grupos
+
+
+@app.get("/disciplinas")
+async def getDisc():
+    return {}
 
 
 # @app.post("/upload")

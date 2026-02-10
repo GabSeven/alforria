@@ -6,8 +6,6 @@ import { Link } from "react-router";
 
 const API_URL = "http://127.0.0.1:8000";
 
-import { Grid, Box } from "@mui/material";
-
 interface Professor {
   matricula: string;
   nome: string;
@@ -40,7 +38,7 @@ export default function ProfessorDetalhes() {
   useEffect(() => {
     const carregarDados = async () => {
       try {
-        const response = await fetch(`${API_URL}/professores`);
+        const response = await fetch(`${API_URL}/dados`);
 
         if (!response.ok) {
           navigate("/upload", {
@@ -49,8 +47,9 @@ export default function ProfessorDetalhes() {
           return;
         }
 
-        const professores = await response.json();
-        setProfessores(professores);
+        const dados = await response.json();
+        setProfessores(dados.professores);
+        setGrupos(dados.grupos);
       } catch (error) {
         console.error("Erro:", error);
       }
@@ -60,21 +59,17 @@ export default function ProfessorDetalhes() {
   }, []);
 
   return (
-    <Box
-      maxWidth="lg"
-      component="main"
-      sx={{ display: "flex", flexDirection: "column", my: 16, gap: 4 }}
-    >
+    <div className="root">
       <ul>
         {professores &&
           Object.entries(professores).map(([matricula, professor]) => (
             <li>
               <Link to={`/professores/${matricula}`}>
-                {matricula} - {professor.nomeCompleto}
+                {matricula} - {professor.nome}
               </Link>
             </li>
           ))}
       </ul>
-    </Box>
+    </div>
   );
 }
