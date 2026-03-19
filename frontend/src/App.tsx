@@ -28,7 +28,7 @@ export default function App(props: { disableCustomTheme?: boolean }) {
         {/*<Route path="/grupos" element={<GruposPage />} />*/}
       </Routes>
 
-      <Footer />
+      {/*<Footer />*/}
     </AppTheme>
   );
 }

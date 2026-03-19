@@ -64,6 +64,17 @@ async def getTurmas():
     return [t.serialize() for t in alforria.turmas]
 
 
+@app.get("/turmas/{codigo}-{turma}-{semestre}")
+async def getTurma(codigo: str, turma: str, semestre: int):
+    id = f"{codigo}_{turma}_S{semestre}"
+    # print(codigo, turma, semestre)
+    # o certo era ja ter algum tipo de alforria.turmas[turma_id]
+    for t in alforria.turmas:
+        if t.id() == id:
+            return t.serialize()
+    return {}
+
+
 @app.get("/grupos")
 async def getGrupos():
     return alforria.grupos
