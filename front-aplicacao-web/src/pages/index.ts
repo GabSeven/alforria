@@ -1,0 +1,5 @@
+export { default as MainPage } from "./MainPage"
+export { default as GruposPage } from "./GruposPage"
+export { default as TurmasPage } from "./TurmasPage"
+export { default as TurmaDetalhesPage } from "./TurmaDetalhesPage"
+export { default as ProfessoresPage } from "./ProfessoresPage"
