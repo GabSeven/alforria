@@ -1,7 +1,8 @@
 import { useApp } from "@/context/AppContext"
 import { useParams, useNavigate } from "react-router"
 import { useEffect } from "react"
-import type { Turma } from "@types"
+import type { Turma } from "@/types"
+import { Timetable } from "@/components/Timetable"
 
 export default function TurmaDetalhesPage() {
   const { turmas } = useApp()
@@ -34,12 +35,14 @@ export default function TurmaDetalhesPage() {
   if (!turma) return <p>Turma não encontrada</p>
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-semibold">{turma.nome}</h1>
-      <p>Código: {turma.codigo}</p>
-      <p>Turma: {turma.turma}</p>
-      <p>Curso: {turma.curso}</p>
-      <p>Carga Horária: {turma.cargaHoraria}</p>
+    <div className="container mx-auto space-y-6 py-10">
+      <div>
+        <h1 className="text-2xl font-medium">{turma.nome}</h1>
+        <p className="text-muted-foreground">
+          {turma.curso} · Turma {turma.turma}
+        </p>
+      </div>
+      <Timetable turma={turma} />
     </div>
   )
 }

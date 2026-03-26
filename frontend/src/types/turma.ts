@@ -1,4 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table"
+import type { Horario } from "./timetable"
 
 export interface Turma {
   nome: string
@@ -7,6 +8,7 @@ export interface Turma {
   semestralidade: number
   curso: string
   cargaHoraria: number
+  horarios: Horario[]
 }
 
 export const columns: ColumnDef<Turma>[] = [

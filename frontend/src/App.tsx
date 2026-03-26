@@ -6,6 +6,7 @@ import {
   TurmasPage,
   TurmaDetalhesPage,
   ProfessoresPage,
+  ProfessorDetalhesPage,
 } from "@/pages"
 export default function App() {
   return (
@@ -18,7 +19,7 @@ export default function App() {
         <Route path="/turmas" element={<TurmasPage />} />
         <Route path="/turmas/:id" element={<TurmaDetalhesPage />} />
         <Route path="/professores" element={<ProfessoresPage />} />
-        {/*<Route path="/professores/:id" element={<ProfessorDetalhes />} />*/}
+        <Route path="/professores/:id" element={<ProfessorDetalhesPage />} />
         {/*<Route path="/grupos" element={<GruposPage />} />*/}
       </Routes>
     </div>
