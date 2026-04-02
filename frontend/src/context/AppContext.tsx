@@ -28,6 +28,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       fetch(`${API_URL}/turmas`).then((r) => r.json()),
       fetch(`${API_URL}/professores`).then((r) => r.json()),
     ]).then(([turmas, professores]) => {
+      turmas = turmas.map((t: Turma) => ({
+        ...t,
+        id: `${t.codigo}-${t.turma}-${t.semestralidade}`,
+      }))
+      professores = professores.map((p: any) => ({
+        ...p,
+        turmas: p.turmasALecionar,
+      }))
       setTurmas(turmas)
       setProfessores(professores)
     })

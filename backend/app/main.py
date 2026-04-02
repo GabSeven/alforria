@@ -20,6 +20,7 @@ alforria._CONST_PATH = "../../alforriaData/config/constantes.cnf"
 # from alforria import professores, grupos, turmas, pre_atribuidas,s
 
 alforria._load_()
+alforria._attribute_()
 
 app.add_middleware(
     CORSMiddleware,

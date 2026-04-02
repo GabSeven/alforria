@@ -1,12 +1,13 @@
 import type { ColumnDef } from "@tanstack/react-table"
 
-import type { Turma } from "./turma"
+// import type { Turma } from "./turma"
 
 export interface Professor {
   matricula: string
   nomeCompleto: string
-  turmas: Turma[]
+  turmas: string[]
   observacao: string
+  prefHorarios: number[][]
 }
 
 export const columns: ColumnDef<Professor>[] = [

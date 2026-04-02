@@ -2,7 +2,7 @@ import { useApp } from "@/context/AppContext"
 import { useParams, useNavigate } from "react-router"
 import { useEffect } from "react"
 import type { Turma } from "@/types"
-import { Timetable } from "@/components/Timetable"
+import { TurmaTimetable as Timetable } from "@/components/Timetable"
 
 export default function TurmaDetalhesPage() {
   const { turmas } = useApp()
@@ -41,8 +41,14 @@ export default function TurmaDetalhesPage() {
         <p className="text-muted-foreground">
           {turma.curso} · Turma {turma.turma}
         </p>
+        <p className="text-muted-foreground">
+          {turma.semestralidade}o Semestre
+        </p>
       </div>
-      <Timetable turma={turma} />
+      <div className="flex-row">
+        <Timetable turma={turma} />
+        <Timetable turma={turma} />
+      </div>
     </div>
   )
 }
