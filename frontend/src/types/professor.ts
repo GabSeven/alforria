@@ -8,6 +8,8 @@ export interface Professor {
   turmas: string[]
   observacao: string
   prefHorarios: number[][]
+  // eu acho que dá pra impedimentos virar um set (precisa?)
+  impedimentos: number[][]
 }
 
 export const columns: ColumnDef<Professor>[] = [

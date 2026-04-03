@@ -18,6 +18,8 @@ export default function TurmaDetalhesPage() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!turmas) return
 
+      if (e.altKey) return
+
       if (e.key === "ArrowRight") {
         const proximo = (indiceAtual + 1) % turmas.length
         navigate(`/turmas/${getId(turmas[proximo])}`)
@@ -46,7 +48,6 @@ export default function TurmaDetalhesPage() {
         </p>
       </div>
       <div className="flex-row">
-        <Timetable turma={turma} />
         <Timetable turma={turma} />
       </div>
     </div>

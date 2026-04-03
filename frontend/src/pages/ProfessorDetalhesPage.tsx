@@ -1,31 +1,30 @@
 import { useApp } from "@/context/AppContext"
 import { useParams, useNavigate } from "react-router"
 import { useEffect } from "react"
-import type { Professor } from "@types"
 import { ProfessorTimetable } from "@/components/Timetable"
+import { ProfessorSidebar } from "@/components/ProfessorSidebar"
+import type { Professor } from "@types"
 
 export default function ProfessorDetalhesPage() {
-  const { professores, turmas } = useApp()
+  const { professores } = useApp()
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const getId = (professor: Professor) => `${professor.matricula}`
-
-  const indiceAtual = professores?.findIndex((p) => getId(p) === id) ?? -1
+  const indiceAtual =
+    professores?.findIndex((p) => String(p.matricula) === id) ?? -1
   const professor = professores?.[indiceAtual]
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!professores) return
-
+      if (e.altKey || !professores) return
       if (e.key === "ArrowRight") {
         const proximo = (indiceAtual + 1) % professores.length
-        navigate(`/professores/${getId(professores[proximo])}`)
+        navigate(`/professores/${professores[proximo].matricula}`)
       }
       if (e.key === "ArrowLeft") {
         const anterior =
           (indiceAtual - 1 + professores.length) % professores.length
-        navigate(`/professores/${getId(professores[anterior])}`)
+        navigate(`/professores/${professores[anterior].matricula}`)
       }
     }
 
@@ -38,14 +37,17 @@ export default function ProfessorDetalhesPage() {
   console.log(professor.prefHorarios)
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-semibold">{professor.nomeCompleto}</h1>
-      <p>Mátricula: {professor.matricula}</p>
-      <p>Observacao: {professor.observacao}</p>
-      <div className="flex flex-row">
-        <ProfessorTimetable professor={professor} semestre={1} />
-        <ProfessorTimetable professor={professor} semestre={2} />
-      </div>
+    <div className="flex h-[calc(100vh-56px)] overflow-hidden">
+      <ProfessorSidebar professor={professor} />
+      <main className="flex-1 overflow-auto p-6">
+        <div className="flex gap-6">
+          <ProfessorTimetable professor={professor} semestre={1} />
+          <ProfessorTimetable professor={professor} semestre={2} />
+        </div>
+      </main>
+      <aside className="w-60 min-w-60 overflow-auto border-l border-border p-4">
+        {/* conteúdo futuro */}
+      </aside>
     </div>
   )
 }

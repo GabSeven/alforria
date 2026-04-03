@@ -15,7 +15,7 @@ export function TurmaTimetable({ turma }: TurmaTimetableProps) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full table-fixed border-collapse text-xs">
+      <table className="w-3xl table-fixed border-collapse text-xs">
         <thead>
           <tr>
             <th className="w-20" />
@@ -50,7 +50,7 @@ export function TurmaTimetable({ turma }: TurmaTimetableProps) {
                       key={dia}
                       className={`h-9 border border-border text-center ${
                         temAula(dia, horario)
-                          ? "bg-purple-100 dark:bg-purple-900"
+                          ? "bg-purple-600/50 dark:bg-purple-400/50"
                           : ""
                       }`}
                     />
@@ -94,6 +94,8 @@ export function ProfessorTimetable({
     return acc
   }, {} as AulasDia)
 
+  console.log(professor)
+
   // const qualAula: AulaDiaHorario = professor.turmas?.reduce(
   //   (acc, turma, indiceTurma) => {
   //     turma.horarios?.forEach(({ dia, horario }) => {
@@ -104,12 +106,21 @@ export function ProfessorTimetable({
   //   {} as AulaDiaHorario
   // )
 
+  const corPrefHorário: Record<number, string> = {
+    0: "bg-green-500/10 dark:bg-green-700/10",
+    2.5: "bg-green-500/20 dark:bg-green-700/20",
+    5: "bg-green-500/30 dark:bg-green-700/30",
+    7.5: "bg-green-500/40 dark:bg-green-700/40",
+    10: "bg-green-500/50 dark:bg-green-700/50",
+  }
+
+  // console.log(professor.prefHora rios)
   return (
     <div className="overflow-x-auto">
       <table className="w-full table-fixed border-collapse text-xs">
         <thead>
           <tr>
-            <th className="w-20" />
+            <th className="w-10" />
             {dias.map((dia) => (
               <th
                 key={dia}
@@ -133,14 +144,20 @@ export function ProfessorTimetable({
               </tr>
               {periodo.horarios.map((horario) => (
                 <tr key={horario}>
-                  <td className="bg-muted pr-2 text-center text-muted-foreground">
+                  <td className="bg-muted text-center text-muted-foreground">
                     {horario}
                     {/*· {HORARIOS[horario]}*/}
                   </td>
                   {dias.map((dia) => (
                     <td
                       key={dia}
-                      className={`h-9 border border-border text-center`}
+                      className={`h-9 border border-border text-center ${
+                        !professor.impedimentos[horario][dia]
+                          ? corPrefHorário[professor.prefHorarios[horario][dia]]
+                          : qualAula?.[dia]?.[horario]
+                            ? "bg-red-600/50"
+                            : ""
+                      } `}
                     >
                       <div className="flex flex-col gap-0.5">
                         {qualAula?.[dia]?.[horario]?.map((id) => (
